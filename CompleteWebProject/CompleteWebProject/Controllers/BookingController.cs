@@ -69,11 +69,11 @@ namespace Project.Controllers
         [HttpGet]
         public IActionResult Book(int carid)
         {
-            if (HttpContext.Session.GetInt32("UserId") == null)
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
             {
                 HttpContext.Session.SetInt32("Logged",1);
                 HttpContext.Session.SetInt32("Booked",carid);
-                return RedirectToAction("Login", "Account");
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
             var booking = new Booking();
 

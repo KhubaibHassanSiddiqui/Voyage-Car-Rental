@@ -56,7 +56,7 @@
                            value="@Model?.booking.endTime.ToString("HH:mm") ?? " 00:00"" required>
                 </div>
 
-                <input type="hidden" name="booking.userId" value="@HttpContextAccessor.HttpContext.Session.GetInt32("UserId")" />
+                <input type="hidden" name="booking.userId" value="@HttpContextAccessor.HttpContext.Session.GetString("UserId")" />
                     <input type="hidden" name="booking.carId" value="@Model?.booking.carId" />
                     <input type="hidden" name="car.Id" value="@Model?.car.Id">
                     <input type="hidden" name="car.make" value="@Model?.car.make">

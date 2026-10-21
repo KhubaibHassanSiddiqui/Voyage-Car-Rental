@@ -14,6 +14,18 @@ namespace Project.Controllers
             _userRepository = userRepository;
         }
 
+        [HttpGet]
+        public IActionResult Login() =>
+            RedirectToPage("/Account/Login", new { area = "Identity" });
+
+        [HttpGet]
+        public IActionResult SignUpStep1() =>
+            RedirectToPage("/Account/Register", new { area = "Identity" });
+
+        [HttpGet]
+        public IActionResult SignUpStep2() =>
+            RedirectToPage("/Account/Register", new { area = "Identity" });
+
         //[HttpGet]
         //public IActionResult Login()
         //{

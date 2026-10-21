@@ -42,7 +42,7 @@ namespace Project.Controllers
             if (HttpContext.Session.GetString("UserId") == null)
             {
                 HttpContext.Session.SetInt32("Logged", 2);
-                return RedirectToAction("Login", "Account");
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
             string id = HttpContext.Session.GetString("UserId");
             var model = new Review

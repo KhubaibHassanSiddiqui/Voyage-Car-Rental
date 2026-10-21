@@ -39,7 +39,7 @@
                                 <a href="#" class="btn btn-secondary">Forgot Password?</a>
                                 <button type="submit" class="btn btn-primary">Login</button>
                             </div>
-                        <a class="text-decoration-underline text-black logged-link" href="@Url.Action("SignUpStep1", "Account")">Don't have an account? Create one.</a>
+                        <a class="text-decoration-underline text-black logged-link" asp-area="Identity" asp-page="/Account/Register">Don't have an account? Create one.</a>
                         </form>
                     </div>
                 </div>

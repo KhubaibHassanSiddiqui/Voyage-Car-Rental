@@ -46,7 +46,7 @@
         <div class="row align-items-center">
             <div class="col-auto">
                 @{
-                    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId") as int?;
+                    var userId = HttpContextAccessor.HttpContext.Session.GetString("UserId");
                     var username=ViewBag.Username;
                 }
                 <a href="@Url.Action("Index", "Home", new { id = userId })">
@@ -90,7 +90,7 @@
                             <div class="col-auto ms-2 d-flex">
                                 <div class="dropdown d-inline-block">
                                     @{
-                                        if (@userId != null)
+                                        if (!string.IsNullOrEmpty(userId))
                                         {
                                             <button class="btn dropdown-toggle" type="button" id="profileDropdown"
                                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -98,7 +98,11 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end text-center" style="width:auto" aria-labelledby="profileDropdown">
                                                 <li><a class="dropdown-item" href="@Url.Action("Index", "User")">Profile</a></li>
-                                                <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")">Logout</a></li>
+                                                <li>
+                                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post" class="d-inline">
+                                                        <button type="submit" class="dropdown-item">Logout</button>
+                                                    </form>
+                                                </li>
                                             </ul>
                                         }
 
@@ -114,7 +118,7 @@
 
                                 </div>
                                 <div>
-                                    @if (userId != null)
+                                    @if (!string.IsNullOrEmpty(userId))
                                     {
                                         if (ViewBag.bookingCount > 0)
                                         {

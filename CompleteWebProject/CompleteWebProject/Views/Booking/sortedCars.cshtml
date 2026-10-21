@@ -3,7 +3,7 @@
 @model List<Car>
 @{
     bool flag = false;
-    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId") as int?;
+    var userId = HttpContextAccessor.HttpContext.Session.GetString("UserId");
 }
 
 <h5 class="text-black">Total Cars Found : <span class="text-warning">@Model.Count(car => car.isAvailable == 1)</span></h5>

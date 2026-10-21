@@ -1,7 +1,6 @@
 using CompleteWebProject.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Project.Models.Domains;
 using Project.Models.Interfaces;
 using Project.Models.Repository;
@@ -28,6 +27,12 @@ namespace CompleteWebProject
             options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            });
 
             builder.Services.AddControllersWithViews();
 
@@ -52,10 +57,6 @@ namespace CompleteWebProject
                 options.Cookie.HttpOnly = true; // Make the cookie HTTP only
                 options.Cookie.IsEssential = true; // Make the session cookie essential
             });
-
-            // Add services to the container
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
 
             var app = builder.Build();
 

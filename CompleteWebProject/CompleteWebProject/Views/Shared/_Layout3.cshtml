@@ -55,7 +55,11 @@
                     <img src="@ViewBag.url" alt="mdo" width="30" height="30" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small shadow text-center text-white" aria-labelledby="dropdownUser3">
-                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")">Sign out</a></li>
+                    <li>
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post" class="d-inline">
+                            <button type="submit" class="dropdown-item">Sign out</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </nav>

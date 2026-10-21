@@ -56,7 +56,7 @@ namespace Project.Controllers
             if (HttpContext.Session.GetString("UserId") == null)
             {
                 HttpContext.Session.SetInt32("Logged", 3);
-                return RedirectToAction("Login", "Account");
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
 
             else

@@ -14,7 +14,7 @@
                     </div>
                     <div class="card-body">
                         <form method="post" asp-action="SignUpStep1">
-                        <a class="text-decoration-underline text-black logged-link" href="@Url.Action("Login", "Account")">Already have an account? Login.</a>
+                        <a class="text-decoration-underline text-black logged-link" asp-area="Identity" asp-page="/Account/Login">Already have an account? Login.</a>
                             <div class="mb-3">
                                 <label for="firstName" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="firstName" name="firstName" 

@@ -32,11 +32,16 @@ namespace CompleteWebProject.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<AspNetUsers> _signInManager;
+        private readonly UserManager<AspNetUsers> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<AspNetUsers> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(
+            SignInManager<AspNetUsers> signInManager,
+            UserManager<AspNetUsers> userManager,
+            ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -127,6 +132,39 @@ namespace CompleteWebProject.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        HttpContext.Session.SetString("UserId", user.Id);
+                    }
+
+                    var logged = HttpContext.Session.GetInt32("Logged");
+                    if (logged == 1)
+                    {
+                        HttpContext.Session.Remove("Logged");
+                        var carId = HttpContext.Session.GetInt32("Booked");
+                        if (carId.HasValue)
+                        {
+                            return RedirectToAction("Book", "Booking", new { carid = carId.Value });
+                        }
+                    }
+                    if (logged == 3)
+                    {
+                        HttpContext.Session.Remove("Logged");
+                        return RedirectToAction("Booking", "Home");
+                    }
+                    if (logged == 2)
+                    {
+                        HttpContext.Session.Remove("Logged");
+                        return RedirectToAction("AddReview", "Review");
+                    }
+
+                    if (user?.isAdmin == 1)
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

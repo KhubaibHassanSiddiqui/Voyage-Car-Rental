@@ -2,7 +2,7 @@
 @using Project.Models.Domains
 @model List<Car>
 @{
-    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId") as int?;
+    var userId = HttpContextAccessor.HttpContext.Session.GetString("UserId");
 }
 
 <head>
