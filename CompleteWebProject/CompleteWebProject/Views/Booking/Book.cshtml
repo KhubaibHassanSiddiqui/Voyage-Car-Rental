@@ -1,0 +1,74 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model ViewModel
+
+<head>
+    <title>Car Reservation</title>
+</head>
+
+    <div class="container-fluid p-5 justify-content-center text-center reserve-container">
+        <h1 class="catalog-heading">CAR RESERVATION</h1>
+        <p class="text-white">Home  | Booking | Reservation</p>
+    </div>
+    <div class="container reservation-container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5 d-flex justify-content-center">
+                <div class="card car-card">
+                    <img src="@Model.car.imageUrl" class="card-img-top" alt="Car Image" width="100">
+                    <div class="card-body">
+                        <h5 class="card-title">@($"{Model.car.make} {Model.car.model}")</h5>
+                        <p class="card-text">Category: @Model.car.category</p>
+                        <p class="card-text">Fuel Type: @Model.car.fuelType</p>
+                        <p class="card-text">Year: @Model.car.year</p>
+                        <p class="card-text">Price per Day: $@Model.car.pricePerDay</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <form asp-action="Book" method="post" class="reservation-form">
+                    <div class="mb-3">
+                        <label for="pickup" class="form-label">Pickup Location</label>
+                        <input type="text" class="form-control" id="pickup" name="booking.pickup" value="@Model?.booking.pickup" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dropoff" class="form-label">Dropoff Location</label>
+                        <input type="text" class="form-control" id="dropoff" name="booking.dropoff" value="@Model?.booking.dropoff" required>
+                    </div>
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="startDate" name="booking.startDate"
+                           value="@Model?.booking.startDate.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString(" yyyy-01-01")" required>
+                </div>
+                <div class="mb-3">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="endDate" name="booking.endDate"
+                           value="@Model?.booking.endDate.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString(" yyyy-01-01")" required>
+                </div>
+                <div class="mb-3">
+                    <label for="startTime" class="form-label">Start Time</label>
+                    <input type="time" class="form-control" id="startTime" name="booking.startTime"
+                           value="@Model?.booking.startTime.ToString("HH:mm") ?? " 00:00"" required>
+                </div>
+                <div class="mb-3">
+                    <label for="endTime" class="form-label">End Time</label>
+                    <input type="time" class="form-control" id="endTime" name="booking.endTime"
+                           value="@Model?.booking.endTime.ToString("HH:mm") ?? " 00:00"" required>
+                </div>
+
+                <input type="hidden" name="booking.userId" value="@HttpContextAccessor.HttpContext.Session.GetInt32("UserId")" />
+                    <input type="hidden" name="booking.carId" value="@Model?.booking.carId" />
+                    <input type="hidden" name="car.Id" value="@Model?.car.Id">
+                    <input type="hidden" name="car.make" value="@Model?.car.make">
+                    <input type="hidden" name="car.model" value="@Model?.car.model">
+                    <input type="hidden" name="car.year" value="@Model?.car.year">
+                    <input type="hidden" name="car.fuelType" value="@Model?.car.fuelType">
+                    <input type="hidden" name="car.category" value="@Model?.car.category">
+                    <input type="hidden" name="car.pricePerDay" value="@Model?.car.pricePerDay">
+                    <input type="hidden" name="car.imageUrl" value="@Model?.car.imageUrl">
+                    <input type="hidden" name="car.isAvailable" value="@Model?.car.isAvailable">
+                    <button type="submit" class="btn btn-warning w-100">Confirm Reservation</button>
+                </form>
+            </div>
+        </div>
+    </div>

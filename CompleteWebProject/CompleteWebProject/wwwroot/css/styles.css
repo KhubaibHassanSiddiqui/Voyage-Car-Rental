@@ -1,0 +1,47 @@
+﻿.card-custom {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #f95f11;
+    color: #fff;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #f95f11;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #eb001f;
+        border: none;
+    }
+
+.star-rating {
+    direction: rtl; /* Right-to-left for proper star positioning */
+    display: inline-flex;
+    font-size: 1.5rem;
+    color: #ffd700; /* Gold color for stars */
+}
+
+    .star-rating input {
+        display: none; /* Hide the radio buttons */
+    }
+
+    .star-rating label {
+        cursor: pointer;
+        display: inline-block;
+        color: #d3d3d3; /* Light gray for unselected stars */
+    }
+
+    .star-rating input:checked ~ label {
+        color: #ffd700; /* Gold color for selected stars */
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #ffeb3b; /* Lighter gold on hover */
+    }

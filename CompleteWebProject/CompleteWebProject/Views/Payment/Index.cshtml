@@ -1,0 +1,48 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model ViewLists
+
+<head>
+    <title>Checkout</title>
+</head>
+
+<div class="container payment-container">
+    <h2 class="payment-header">Payment Information</h2>
+    <form asp-action="Index" method="post" class="payment-form">
+        <div class="mb-3">
+            <label for="paymentMethod" class="form-label payment-label">Select Payment Method</label>
+            <select id="paymentMethod" class="form-select" name="paymentList[0].method" value="@Model.paymentList[0]?.method" required>
+                <option value="card">Card</option>
+                <option value="cash">Cash</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="cardName" class="form-label payment-label">Name on Card</label>
+            <input type="text" class="form-control" id="name" name="paymentList[0].name" placeholder="Enter name on card" value="@Model.paymentList[0]?.name" required>
+        </div>
+        <div class="mb-3">
+            <label for="cardNumber" class="form-label payment-label">Card Number</label>
+            <input type="text" class="form-control" id="creditCardNo" name="paymentList[0].creditCardNo" placeholder="1234 5678 9012 3456" value="@Model.paymentList[0]?.creditCardNo" required>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="expiryDate" class="form-label payment-label">Expiry Date</label>
+                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" name="paymentList[0].expiryDate" value="@Model.paymentList[0]?.expiryDate" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="cvv" class="form-label payment-label">CVV</label>
+                <input type="text" class="form-control" id="cvv" placeholder="CVV" name="paymentList[0].CVV" value="@Model.paymentList[0]?.CVV" required>
+            </div>
+        </div>
+        <div class="d-grid">
+            @for (int i = 0; i < Model.bookList.Count; i++)
+            {
+                <input type="hidden" name="bookList[@i].Id" value="@Model.bookList[i].Id" />
+            }
+            <button type="submit" class="btn btn-primary btn-lg">Proceed to Payment</button>
+        </div>
+    </form>
+    <div class="payment-summary mt-4 text-center">
+        <h4 class="total-amount">Total: $@Model.paymentList[0]?.amount</h4>
+    </div>
+</div>

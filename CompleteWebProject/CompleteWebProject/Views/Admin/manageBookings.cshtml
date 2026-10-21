@@ -1,0 +1,59 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model ViewLists
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    bool flag = false;
+}
+<head>
+    <title>Manage Bookings</title>
+</head>
+
+<div class="content text-center">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 mb-4">
+                <div class="card p-4">
+                    <h5 style="font-weight: bolder; font-size: x-large;">All Bookings</h5>
+                </div>
+            </div>
+            @if (@Model.bookList.Count > 0)
+            {
+                @for (int i = 0; i < @Model.bookList.Count; i++)
+                {
+                    flag = true;
+                    var car = Model.carList.FirstOrDefault(c => c.Id == Model.bookList[i].carId);
+
+                    <div class="col-12 d-flex justify-content-center">
+                        <div class="card car-card card-custom">
+                            <div class="row g-0">
+                                <div class="col-md-5 col-12">
+                                    <img src="@car.imageUrl" class="card-img-top" alt="Car Image">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="badge badge-new-car">For Rent</span>
+                                            </div>
+                                            <div class="price-tag fw-bold">@($"${Model.bookList[i].totalPrice}")</div>
+                                        </div>
+                                        <h5 class="card-title mt-3">Toyota Corolla</h5>
+                                        <p class="text-white"><i class="bi bi-geo-alt"></i>@($"Pickup:  {Model.bookList[i].pickup} {Model.bookList[i].startDate}")</p>
+                                        <p class="text-white"><i class="bi bi-geo-alt"></i>@($"Dropoff: {Model.bookList[i].dropoff} {Model.bookList[i].endDate}")</p>
+                                        <a href="@Url.Action("deleteBookings", "Admin",new{id=Model.bookList[i].Id})"><button type="button" class="btn btn-outline-danger btn-sm">Remove</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            @if (!flag)
+            {
+                <h4 class="text-center text-black">No Bookings Yet!</h4>
+            }
+        </div>
+    </div>
+</div>

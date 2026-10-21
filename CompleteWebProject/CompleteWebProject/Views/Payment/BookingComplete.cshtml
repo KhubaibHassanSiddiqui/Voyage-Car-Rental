@@ -1,0 +1,19 @@
+﻿<head>
+    <title>Booking Confirmed</title>
+</head>
+
+<div class="container-fluid mt-5 mb-5 bg-light-subtle">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>@($"Thank you, {ViewBag.Username}")</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p>Your booking has been confirmed!</p>
+                    <a href="@Url.Action("Index", "Booking")" class="btn btn-success w-100">Go to Catalog</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

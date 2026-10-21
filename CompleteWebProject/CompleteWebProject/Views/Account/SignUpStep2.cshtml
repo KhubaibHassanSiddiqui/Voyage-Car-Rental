@@ -1,0 +1,49 @@
+﻿@* @using Project.Models.Domains
+@model User
+
+<head>
+    <title>SignUp</title>
+</head>
+
+    <div class="container-fluid mt-5 mb-5 bg-light-subtle">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Sign Up - Step 2: Account Information</h4>
+                    </div>
+                    <div class="card-body">
+                        @if (ViewBag.ErrorMessage != null)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.ErrorMessage
+                            </div>
+                        }
+
+                        <form method="post" asp-action="SignUpStep2">
+
+                            <input type="hidden" name="firstName" value="@Model?.firstName">
+                            <input type="hidden" name="lastName" value="@Model?.lastName">
+                            <input type="hidden" name="address" value="@Model?.address">
+                            <input type="hidden" name="phone" value="@Model?.phone">
+                            <input type="hidden" name="gender" value="@Model?.gender">
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="@Model?.email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" value="@Model?.password" required>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("SignUpStep1")" class="btn btn-secondary">Back</a>
+                                <button type="submit" class="btn btn-primary">Complete Sign Up</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ *@

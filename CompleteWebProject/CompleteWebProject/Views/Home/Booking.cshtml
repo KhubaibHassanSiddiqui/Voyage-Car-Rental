@@ -1,0 +1,66 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model List<Car>
+@{
+    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId") as int?;
+}
+
+<head>
+    <title>Car Booking</title>
+</head>
+
+<div class="container mt-5">
+
+    @{
+        if (Model != null && Model.Count > 0 && Model.Any(c => c.isAvailable == 1))
+        {
+            <div class="row justify-content-center">
+                <div class="col-12 mb-4 d-flex justify-content-center">
+                    <span class="highlight-bar text-center">
+                        <span class="dot"></span> FIND YOUR PERFECT CAR <span class="dot"></span>
+                    </span>
+                </div>
+
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    if (Model[i].isAvailable == 1)
+                    {
+                        <div class="col-md-4 col-sm-12 d-flex justify-content-center mb-4">
+                            <a href="@Url.Action("CreateBooking", "Home", new { carid = Model[i].Id })">
+                                <div class="card card-custom">
+                                    <img src="@Model[i].imageUrl" class="card-img-top" alt="Car Image" width="55">
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold">@($"{Model[i].make} {Model[i].model}")</h5>
+                                        <div class="d-flex justify-content-center mb-2">
+                                            <span class="me-3"><i class="fas fa-cog"></i> @Model[i].category</span>
+                                            <span class="me-3"><i class="fas fa-gas-pump"></i> @Model[i].fuelType</span>
+                                            <span><i class="fas fa-hourglass-half"></i> @Model[i].year</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between align-items-center">
+                                        <div class="stars">
+                                            @for (int star = 1; star <= 5; star++)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                        </div>
+                                        <div class="price">
+                                            Price : @($"$ {Model[i].pricePerDay}/Day")
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center">
+                No cars available at the moment.
+            </div>
+        }
+    }
+
+</div>

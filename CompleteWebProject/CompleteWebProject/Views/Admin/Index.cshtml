@@ -1,0 +1,70 @@
+﻿@using Project.Models.Domains
+@model statistics
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+ }
+<head>
+    <title>Admin</title>
+</head>
+<div class="content text-center">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 mb-4">
+                <div class="card p-4">
+                    <h5>Welcome back, Khubaib!</h5>
+                    <p>$"$@ViewBag.total" Total Sales</p>
+                    <p>78.4% Growth Rate</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4">
+                <div class="card p-4">
+                    <h5>Monthly Revenue</h5>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4">
+                <div class="card p-4">
+                    <h5>Device Type</h5>
+                    <canvas id="deviceChart"></canvas>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4">
+                <div class="card p-4">
+                    <h5>Total Users</h5>
+                    <p>97.4K</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep','Oct','Nov','Dec'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [@Model.floats[0], @Model.floats[1], @Model.floats[2], @Model.floats[3], @Model.floats[4], @Model.floats[5], @Model.floats[6], @Model.floats[7], @Model.floats[8], @Model.floats[9], @Model.floats[10], @Model.floats[11]],
+                    backgroundColor: '#ff6f1c'
+                }]
+            }
+        });
+
+        const ctx2 = document.getElementById('deviceChart').getContext('2d');
+        const deviceChart = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Luxury', 'Sedan', 'SUV', 'Convertible', 'Hatchback'],
+                datasets: [{
+                    label: 'Device Type',
+                    data: [@Model.ints[0], @Model.ints[1], @Model.ints[2], @Model.ints[3], @Model.ints[4]],
+                    backgroundColor: ['#40407a', '#ff6f1c', '#1a1a2e', '#0f4c75', '#e94560']
+                }]
+            }
+        });
+    });
+</script>

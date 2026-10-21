@@ -1,0 +1,48 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model AspNetUsers
+
+<head>
+    <title>Login</title>
+</head>
+
+    <div class="container-fluid mt-5 mb-5 bg-light-subtle">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Login</h4>
+                    </div>
+                    <div class="card-body">
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("Logged") != null)
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            Kindly Log in first to Proceed
+                        </div>
+                    }
+                    @if (ViewBag.ErrorMessage != null)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.ErrorMessage
+                            </div>
+                        }
+                        <form method="post" asp-action="Login">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="@Model.Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a href="#" class="btn btn-secondary">Forgot Password?</a>
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        <a class="text-decoration-underline text-black logged-link" href="@Url.Action("SignUpStep1", "Account")">Don't have an account? Create one.</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

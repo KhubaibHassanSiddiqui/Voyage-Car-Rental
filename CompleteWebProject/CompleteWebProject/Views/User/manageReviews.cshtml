@@ -1,0 +1,52 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model ViewLists
+@{
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+    bool flag = false;
+}
+<head>
+    <title>Manage Reviews</title>
+</head>
+
+<div class="content text-center">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 mb-4">
+                <div class="card p-4">
+                    <h5 style="font-weight: bolder; font-size: x-large;">Your Reviews</h5>
+                </div>
+            </div>
+            @for (int i = 0; i < Model.reviewList.Count; i++)
+            {
+                flag = true;
+                var user = Model.userList.FirstOrDefault(u => u.Id == Model.reviewList[i].userId);
+                <div class="col-6 mb-2">
+                    <div class="review-card d-flex flex-column align-items-center p-5 rounded text-center">
+                        <img src="@user.imageUrl" alt="Amazing Car" width="100" class="mb-3 rounded-circle">
+                        <div class="justify-content-center text-center">
+                            <h4 class="review-title">Amazing Car</h4>
+                            <p class="text-white">
+                                "@Model.reviewList[i].content"
+                            </p>
+                            <small class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-user mx-2"></i>@($"{user.firstName} {user.lastName}")
+                            </small>
+                            <div class="stars mt-2">
+                                @for (int j = 0; j < Model.reviewList[i].rating; j++)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                            </div>
+                            <a href="@Url.Action("deleteReviews", "User",new{id=Model.reviewList[i].Id})" class="btn btn-outline-danger btn-sm mt-1 mb-2">Remove</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (!flag)
+            {
+                <h4 class="text-center text-black">No Reviews Yet!</h4>
+            }
+        </div>
+    </div>
+</div>

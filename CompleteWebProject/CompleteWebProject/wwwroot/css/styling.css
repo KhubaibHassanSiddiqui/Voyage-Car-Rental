@@ -1,0 +1,247 @@
+﻿body {
+    color: #ffffff;
+    font-family: 'Lora', serif;
+}
+
+.sidebar {
+    background-color: #1a1a2e;
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+    .sidebar .nav-link {
+        color: #ffffff;
+        margin-bottom: 10px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .sidebar .nav-link svg {
+            margin-right: 8px;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #40407a;
+            color: #ff6f1c;
+            border-radius: 4px;
+        }
+
+.content {
+    margin-left: 200px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.collapsed-sidebar .sidebar {
+    width: 60px;
+}
+
+.collapsed-sidebar .content {
+    margin-left: 60px;
+}
+
+.card {
+    background-color: #1a1a2e;
+    border: none;
+    color: #ffffff;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+    .card h5 {
+        color: #ff6f1c;
+    }
+
+.toggler {
+    display: none;
+    background-color: #ff6f1c;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-left: -200px;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .sidebar.active {
+        margin-left: 0;
+    }
+
+    .content.active {
+        margin-left: 200px;
+    }
+
+    .toggler {
+        display: inline-block;
+    }
+
+    .nav-list {
+        margin-top: 40px;
+    }
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-sm-6,
+.col-lg-4 {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.heading1 {
+    font-family: 'Bodoni Moda', serif;
+    color: white;
+    font-size: x-large;
+}
+
+.dropdown-toggle::after {
+    border-top: 4px solid white;
+    /* Change this color to your desired color */
+}
+
+    .dropdown-toggle::after:hover {
+        border-top: 4px solid #ff6f1c;
+    }
+
+.dropdown-menu {
+    background-color: #ff6f1c;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.card-custom {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    height: auto;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+    .card-custom:hover {
+        transform: translateY(-5px);
+    }
+
+.card-img-top {
+    border-radius: 8px 8px 0 0;
+    width: 100%;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: none;
+    transition: background-color 0.3s ease;
+}
+
+    .card-footer .price {
+        font-weight: bold;
+        color: #333;
+    }
+
+.card-custom .fa {
+    margin-right: 8px;
+    color: #ff6600;
+}
+
+.card-custom .card-img-top {
+    width: 100%;
+    /* Ensure the image takes full width of the card */
+    height: 250px;
+    /* Maintain aspect ratio */
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+}
+
+.stars i {
+    color: #ffb400;
+}
+
+.review-card {
+    background-color: #1a1a2e;
+    border: none;
+    color: #ffffff;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+    .review-card img {
+        border-radius: 8px;
+        margin-right: 20px;
+        max-width: 100px;
+        height: auto;
+    }
+
+    .review-card .review-title {
+        color: #ff4500;
+    }
+
+.profile-container {
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #1a1a2e;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #007bff;
+}
+
+.show-button {
+    font-family: 'Garamond', serif;
+    color: #F5F5F5;
+    font-weight: 900;
+    font-size: larger;
+    background-color: #f95f11;
+    border-radius: 10px;
+    border: none;
+}
+
+    .show-button:hover {
+        background-color: #eb001f;
+    }

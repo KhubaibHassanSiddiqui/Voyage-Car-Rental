@@ -1,0 +1,62 @@
+﻿@page
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+<div class="container-fluid mt-5 mb-5 bg-light-subtle">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Login</h4>
+                </div>
+                <div class="card-body">
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("Logged") != null)
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            Kindly Log in first to Proceed
+                        </div>
+                    }
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="Input.Email" class="form-label">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.Password" class="form-label">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="checkbox mb-3">
+                            <label asp-for="Input.RememberMe" class="form-label">
+                                <input class="form-check-input" asp-for="Input.RememberMe" />
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a id="forgot-password" asp-page="./ForgotPassword" class="btn btn-secondary">Forgot Password?</a>
+                            <button id="login-submit" type="submit" class="btn btn-primary px-5">Login</button>
+                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="btn btn-secondary">Resend email confirmation</a>
+                        </div>
+                        <a class="text-decoration-underline text-black logged-link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Don't have an account? Create one.</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

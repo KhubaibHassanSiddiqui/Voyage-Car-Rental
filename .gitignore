@@ -1,0 +1,16 @@
+# Build / IDE
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local-only SQL scripts and secrets
+CompleteWebProject/database/
+**/secrets.json
+
+# OS
+Thumbs.db
+.DS_Store

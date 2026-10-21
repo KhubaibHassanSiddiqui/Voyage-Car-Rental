@@ -1,0 +1,91 @@
+﻿@using Project.Models.Domains
+@model Car
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<head>
+    <title>Manage Cars</title>
+</head>
+
+<div class="container-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Upload Car Details</h4>
+                </div>
+                <div class="card-body">
+                    <form id="addCarsForm" enctype="multipart/form-data">
+                        <input type="hidden" name="isAvailable" value="@Model?.isAvailable">
+                        <div class="mb-3">
+                            <label for="make" class="form-label">Make</label>
+                            <input type="text" class="form-control" id="make" name="make" value="@Model?.make" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="model" class="form-label">Model</label>
+                            <input type="text" class="form-control" id="model" name="model" value="@Model?.model" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Year</label>
+                            <input type="number" class="form-control" id="year" name="year" value="@Model?.year" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pricePerDay" class="form-label">Price Per Day</label>
+                            <input type="number" class="form-control" id="pricePerDay" name="pricePerDay" value="@Model?.pricePerDay" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fuelType" class="form-label">Fuel Type</label>
+                            <select class="form-control" id="fuelType" name="fuelType" value="@Model?.fuelType" required>
+                                <option value="Petrol">Petrol</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-control" id="category" name="category" value="@Model?.category" required>
+                                <option value="Luxury">Luxury</option>
+                                <option value="Sedan">Sedan</option>
+                                <option value="SUV">SUV</option>
+                                <option value="Convertible">Convertible</option>
+                                <option value="Hatchback">Hatchback</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imageUrl" class="form-label">Car Image</label>
+                            <input type="file" class="form-control" id="imageUrl" name="imageUrl" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("manageCars", "Admin")" class="btn btn-secondary">Cancel</a>
+                            <button type="button" class="btn btn-primary" onclick="submitCarsForm()">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function submitCarsForm() {
+
+        var form = document.getElementById("addCarsForm");
+        var formData = new FormData(form);
+
+        $.ajax({
+            url: '@Url.Action("addCars", "Admin")',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                window.location.href = '@Url.Action("manageCars", "Admin")';
+            },
+            error: function (xhr, status, error) {
+                console.error('Error occurred:', xhr.responseText);
+            }
+        });
+    }
+</script>

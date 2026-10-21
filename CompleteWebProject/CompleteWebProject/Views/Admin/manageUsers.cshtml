@@ -1,0 +1,42 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model List<AspNetUsers>
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    bool flag = false;
+}
+<head>
+    <title>Manage Users</title>
+</head>
+
+<div class="content text-center">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 mb-4">
+                <div class="card p-4">
+                    <h5 style="font-weight: bolder; font-size: x-large;">All Users</h5>
+                </div>
+            </div>
+            @for(int i = 0; i < Model.Count; i++)
+            {
+                flag = true;
+                <div class="col-6 mb-2">
+                    <div class="review-card d-flex flex-column align-items-center p-3 rounded text-center">
+                        <img src="@Model[i].imageUrl" alt="Amazing Car" width="100" class="mb-3 rounded-circle">
+                        <div class="justify-content-center text-center">
+                            <h4 class="review-title">@($"{Model[i].firstName} {Model[i].lastName}")</h4>
+                            <p class="text-white">
+                                Email : @Model[i].Email
+                            </p>
+                            <a href="@Url.Action("deleteUsers", "Admin",new{id=Model[i].Id})" class="btn btn-outline-danger btn-sm mt-1 mb-2">Remove</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (!flag)
+            {
+                <h4 class="text-center text-black">No Users Found!</h4>
+            }
+        </div>
+    </div>
+</div>

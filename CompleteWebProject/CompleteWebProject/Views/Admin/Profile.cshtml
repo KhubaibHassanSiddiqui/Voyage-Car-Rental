@@ -1,0 +1,31 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model AspNetUsers
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<head>
+    <title>Profile</title>
+</head>
+
+<div class="container">
+    <div class="profile-container">
+        @if (ViewBag.notification != null)
+        {
+            @if (HttpContextAccessor.HttpContext.Session.GetInt32("Profile") != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    Profile Edited
+                </div>
+            }
+        }
+        <img src="@Model.imageUrl" alt="Profile Picture" class="profile-pic">
+        <h2 class="mt-3 " style="color:#ff6600;">@($"{Model.firstName} {Model.lastName}")</h2>
+        <p class="text-white">@Model.Email</p>
+        <p>Phone: @Model.PhoneNumber</p>
+        <p>Address: @Model.address</p>
+        <a href="@Url.Action("editProfile", "Admin")">
+            <button class="btn btn-primary show-button">Edit Profile</button>
+        </a>
+    </div>
+</div>

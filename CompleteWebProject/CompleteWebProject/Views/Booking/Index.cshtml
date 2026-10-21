@@ -1,0 +1,159 @@
+﻿@using Project.Models.Domains
+@model List<Car>
+
+<head>
+    <title>Cars Listing</title>
+</head>
+
+    <div class="container-fluid p-5 justify-content-center text-center catalog-container">
+        <h1 class="catalog-heading">VOYAGE FLEET</h1>
+        <p class="text-white">Home  | Catalog</p>
+    </div>
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-3 text-black">
+                    <h5></h5>
+                    <div>
+                    <form id="sortForm" method="post" asp-action="sort" asp-controller="Booking">
+                        <div class="d-inline-block w-auto ms-3">
+                            <select class="form-select" name="sortOrder" aria-label="Sort Order" onchange="sortCars()">
+                                <option value="newest">New Listed: Newest</option>
+                                <option value="priceLowToHigh">Price: Low to High</option>
+                                <option value="priceHighToLow">Price: High to Low</option>
+                            </select>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                <div id="sortAllCars">
+                @await Html.PartialAsync("sortedCars", Model)
+                </div>
+            </div>
+
+        <div class="col-lg-4">
+            <div class="search-filter p-3">
+                <h5 class="text-dark">Find Perfect Vehicles</h5>
+                <hr>
+                <form id="findCarsForm" method="post" asp-action="findCars" asp-controller="Booking">
+                    <div class="mb-3">
+                        <select class="form-select" id="fuelType" name="fuelType">
+                            <option selected value="">Select Fuel Type</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Electric">Electric</option>
+                            <option value="Hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Year" id="year" name="year">
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-select" id="category" name="category">
+                            <option selected value="">Select Category</option>
+                            <option value="Luxury">Luxury</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Hatchback">Hatchback</option>
+                            <option value="Sedan">Sedan</option>
+                            <option value="Convertible">Convertible</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="priceSlider" class="form-label">Price Range: <span id="priceRange"></span></label>
+                        <div id="priceSlider"></div>
+                    </div>
+                    <button class="btn btn-search w-100" type="button" onclick="findCars()">Find New Vehicles</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<script>
+    function sortCars() {
+        var sortOption = $('#sortForm select[name="sortOrder"]').val();
+        var carList = @Html.Raw(Json.Serialize(Model));
+
+        var data = {
+            sortOrder: sortOption,
+            cars: carList
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("sort", "Booking")',
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                $('#sortAllCars').html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error occurred:', xhr.responseText);
+            }
+        });
+    }
+</script>
+
+<script>
+    const priceSlider = document.getElementById('priceSlider');
+    const priceRange = document.getElementById('priceRange');
+
+    noUiSlider.create(priceSlider, {
+        start: [100, 900],  // Initial values
+        connect: true,
+        range: {
+            'min': 0,
+            'max': 1000
+        },
+        step: 10,
+        tooltips: true,
+        format: {
+            to: function (value) {
+                return `$${Math.round(value)}`;
+            },
+            from: function (value) {
+                return Number(value.replace('$', ''));
+            }
+        }
+    });
+
+    priceSlider.noUiSlider.on('update', function (values, handle) {
+        priceRange.textContent = `${values[0]} - ${values[1]}`;
+        var minPrice = parseInt(values[0].replace('$', ''));
+        var maxPrice = parseInt(values[1].replace('$', ''));
+    });
+
+</script>
+
+<script>
+    function findCars() {
+        event.preventDefault(); // Prevent default form submission
+        var minPrice = parseInt(priceSlider.noUiSlider.get()[0].replace('$', ''));
+        var maxPrice = parseInt(priceSlider.noUiSlider.get()[1].replace('$', ''));
+        // Collect form data
+        var data = {
+            fuelType: $('#fuelType').val(),
+            year: $('#year').val(),
+            category: $('#category').val(),
+            minPrice: minPrice,
+            maxPrice: maxPrice
+        };
+
+        // AJAX POST request
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("findCars", "Booking")', // URL to findCars action
+            data: JSON.stringify(data), // Send data as JSON string
+            contentType: 'application/json; charset=utf-8', // Specify content type
+            success: function (result) {
+                // On success, replace the content of #sortAllCars with the returned partial view
+                $('#sortAllCars').html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error occurred:', xhr.responseText);
+            }
+        });
+    }
+
+
+</script>

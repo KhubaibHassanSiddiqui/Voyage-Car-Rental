@@ -1,0 +1,414 @@
+﻿@using Project.Models.Domains
+@model ViewLists
+ @{
+     var placeholders = new List<string>
+{
+    "Experience the thrill of the open road in an unparalleled style.",
+    "Drive your dreams with unmatched elegance and power.",
+    "Unleash the beast on every journey with precision and speed.",
+    "Redefine luxury and performance with every mile you travel.",
+    "Crafted for those who settle for nothing but the best.",
+    "Feel the adrenaline rush with every turn and every ride."
+};
+}
+
+@if (Model.carList.Count(c=> c.isAvailable==1) > 0)
+{
+    <style>
+        @@media (min-width: 992px) {
+            .why-container {
+                height: 800px;
+            }
+
+            .carousel-container {
+                margin: -280px auto 0 auto;
+            }
+        }
+    </style>
+}
+
+<head>
+    <title>HomePage</title>
+</head>
+    <div class="full-width-container p-2 head-container">
+
+        <div class="row pt-2">
+            <div class="col-6">
+                <div class="heading-2">
+                    TAKE A TEST DRIVE
+                </div>
+                <div class="sub-text mb-4">
+                    Rev up your journey with our exceptional selection of cars, where every drive transforms into an unforgettable adventure, and each road becomes a thrilling exploration of freedom and excitement.
+                </div>
+                <div class="mt-4">
+                    <a href="@Url.Action("Index","Booking")">
+                        <button class="book-button px-sm-4 py-sm-1">
+                            BOOK A CAR
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div class="news-tags col-4 offset-2 justify-content-center text-center">
+                @for(int i = 0; i < @Model.carList.Count && i<3; i++)
+                {
+                    @if (@Model.carList[i].isAvailable == 1)
+                    {
+                        <div class="mb-4">
+                            <a class="icon-link icon-link-hover" href="@Url.Action("Book","Booking",new{carid=Model.carList[i].Id})">
+                                @($"{Model.carList[i].year} {Model.carList[i].make} {Model.carList[i].model}")
+                            </a>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+
+        <div class="container my-2 w-80 justify-content-center">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <span class="line"></span>
+                        <h1 class="heading-2 d-inline-block mx-3">FIND THE RIGHT CAR FOR EVERY OCCASION</h1>
+                        <span class="line"></span>
+                    </div>
+                </div>
+            <form class="row g-3 text-whi" method="post" asp-action="Index">
+                <div class="col-md-6">
+                    <label for="pickUpLocation" class="form-label text-white">Pick Up Location</label>
+                    <input type="text" class="form-control" id="pickup" placeholder="City, State or Airport Code" name="booking.pickup" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="pickUpDate" class="form-label text-white">Pick Up Date</label>
+                    <input type="date" class="form-control" id="startDate" name="booking.startDate" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="pickUpTime" class="form-label text-white">Time</label>
+                    <input type="time" class="form-control" id="startTime" name="booking.startTime" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="returnLocation" class="form-label text-white">Return to a different location</label>
+                    <input type="text" class="form-control" id="dropoff" name="booking.dropoff" placeholder="City, State or Airport Code" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="returnDate" class="form-label text-white">Return Date</label>
+                    <input type="date" class="form-control" id="endDate" name="booking.endDate" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="returnTime" class="form-label text-white">Time</label>
+                    <input type="time" class="form-control" id="endTime" name="booking.endTime" required>
+                </div>
+                <hr class="m-0">
+
+                <div class="col-12 d-flex justify-content-center mt-4">
+                    <button type="submit" class="book-button px-sm-4 py-sm-1">BOOK A CAR</button>
+                </div>
+            </form>
+
+
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+
+    <div class="container-fluid p-5 text-center">
+        <span class="line"></span>
+        <h1 class="d-inline-block text-black">Featured Vehicles</h1>
+        <span class="line"></span>
+        <p class="sub-text">
+            Book your favourite car right now and live your life a quarter mile at a time!
+        </p>
+    @if (@Model.carList.Count > 0 && @Model.carList.Count(c => c.isAvailable == 1) > 0)
+            {
+                <div class="row justify-content-center featured-container my-4">
+            <div class="col-3">
+                <div class="mt-4">
+                    <button class="featured-button px-sm-4 py-sm-1" onclick="loadPartialView('All')">
+                        All
+                    </button>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="mt-4">
+                    <button class="featured-button px-sm-4 py-sm-1" onclick="loadPartialView('Luxury')">
+                        Luxury
+                    </button>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="mt-4">
+                    <button class="featured-button px-sm-4 py-sm-1" onclick="loadPartialView('Sedan')">
+                        Sedan
+                    </button>
+                </div>
+            </div>
+        </div>
+            }
+        <div class="container mt-5" id="carCategory">
+        @await Html.PartialAsync("GetCarsByCategory",Model.carList)
+        </div>
+
+    </div>
+
+<section class="stats-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 mb-4">
+                <span class="highlight-bar">
+                    <span class="dot"></span> FIND YOUR PERFECT CAR <span class="dot"></span>
+                </span>
+            </div>
+            <div class="col-md-3 col-sm-6 stats-item">
+                <img src="img/sedan.png" alt="Cars">
+                <h3><span class="counter" data-target="@Model.carList.Count">0</span>+</h3>
+                <p class="text-white">Cars In Stock</p>
+            </div>
+            <div class="col-md-3 col-sm-6 stats-item">
+                <img src="img/car.png" alt="Bookings">
+                <h3><span class="counter" data-target="@Model.bookList.Count">0</span>+</h3>
+                <p class="text-white">Bookings Made</p>
+            </div>
+            <div class="col-md-3 col-sm-6 stats-item">
+                <img src="img/maintenance.png" alt="Bookings Completed">
+                <h3><span class="counter" data-target="@Model.paymentList.Count">0</span>+</h3>
+                <p class="text-white">Bookings Completed</p>
+            </div>
+            <div class="col-md-3 col-sm-6 stats-item">
+                <img src="img/rocket.png" alt="Happy Clients">
+                <h3><span class="counter" data-target="@Model.userList.Count">0</span>+</h3>
+                <p class="text-white">Happy Clients</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="why-us p-0">
+    <div class="why-container">
+        <span class="line"></span>
+        <h1 class="d-inline-block text-black">Why Us?</h1>
+        <span class="line"></span>
+        <div class="row pt-2">
+            <div class="col-lg-4 col-md-6 icon-box">
+                <i class="fas fa-shield-alt" style="color: #f1c40f;"></i>
+                <h4 class="text-black">Secured Payment Guarantee</h4>
+                <p class="text-black">Your transactions are protected, ensuring peace of mind</p>
+            </div>
+            <div class="col-lg-4 col-md-6 icon-box">
+                <i class="fas fa-headset" style="color: #f1c40f;"></i>
+                <h4 class="text-black">Help Center & Support 24/7</h4>
+                <p class="text-black" class="text-white">We're here to assist you every step of the way</p>
+            </div>
+            <div class="col-lg-4 col-md-6 icon-box">
+                <i class="fas fa-car" style="color: #f1c40f;"></i>
+                <h4 class="text-black">Booking any Class Vehicles</h4>
+                <p class="text-black">Choose from a diverse range of vehicles tailored to your needs.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 icon-box">
+                <i class="fas fa-briefcase" style="color: #f1c40f;"></i>
+                <h4 class="text-black">Corporate and Business Services</h4>
+                <p class="text-black">Tailored solutions for your professional transportation requirements</p>
+            </div>
+            <div class="col-lg-4 col-md-6 icon-box">
+                <i class="fas fa-user-plus" style="color: #f1c40f;"></i>
+                <h4 class="text-black">Car Sharing Options</h4>
+                <p class="text-black">Flexible sharing solutions for your travel convenience</p>
+            </div>
+            <div class="col-lg-4 col-md-6 icon-box">
+                <i class="fas fa-gem" style="color: #f1c40f;"></i>
+                <h4 class="text-black">Luxury Cars</h4>
+                <p class="text-black">Experience the pinnacle of elegance and performance</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.carList.Count > 0 && Model.carList.Count(c => c.isAvailable == 1) > 0)
+{
+    var car = Model.carList.FirstOrDefault(car => car.isAvailable == 1);
+    <div class="carousel-container mb-2">
+        <div class="row justify-content-center">
+            <div class="col-12 d-flex justify-content-center align-items-center mb-2">
+                <span class="line2"></span>
+                <span class="line mx-1"></span>
+                <span class="line2"></span>
+            </div>
+            <div class="col-12 col-lg-10">
+                <div id="carSlider" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                    <div class="carousel-inner">
+                        @if (car.isAvailable == 1)
+                        {
+                            <a class="why-car" href="@Url.Action("Book","Booking",new{carid=Model.carList[0].Id})">
+                                <div class="carousel-item active">
+                                    <img src="@car.imageUrl" alt="Car">
+                                    <div class="carousel-caption mt-5">
+                                        <span class="badge badge-car">@($"$ {car.pricePerDay}/Day")</span>
+                                        <h5>@($"{car.year} {car.make} {car.model}")</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                        @for (int i = 1; i < Model.carList.Count; i++)
+                        {
+                            @if (Model.carList[i] != car)
+                            {
+                                if (Model.carList[i].isAvailable == 1)
+                                {
+                                    <a class="why-car" href="@Url.Action("Book","Booking",new{carid=Model.carList[i].Id})">
+                                        <div class="carousel-item">
+                                            <img src="@Model.carList[i].imageUrl" alt="Car">
+                                            <div class="carousel-caption mt-5">
+                                                <span class="badge badge-car">@($"$ {Model.carList[i].pricePerDay}/Day")</span>
+                                                <h5>@($"{Model.carList[i].year} {Model.carList[i].make} {Model.carList[i].model}")</h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                }
+                            }
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carSlider" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carSlider" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="contact-section">
+    <div class="contact-content">
+        <h2>Contact Us</h2>
+        <p class="text-white">We'd love to hear from you. Whether you have a question or need assistance, feel free to reach out.</p>
+        <p class="phone-number text-white">Call now: +92 90078601</p>
+        <a href="tel:+9290078601" target="_blank" class="btn-contact">CONTACT US</a>
+    </div>
+</div>
+
+@if (Model.reviewList.Count > 0)
+{
+    <div class="testimonial-section mb-2">
+        <h2 class="text-dark">What Clients Say</h2>
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="testimonial">
+                        <p>@($"{Model.reviewList[0].title}")</p>
+                        <p>@($"\"{Model.reviewList[0].content}\"")</p>
+                        @{
+                            var user = Model.userList.FirstOrDefault(u => u.Id == Model.reviewList[0].userId);
+                        }
+                        @if (user != null)
+                        {
+                            <img src="@user.imageUrl" alt="Client">
+                            <div class="client-name">@($"{user.firstName} {user.lastName}")</div>
+                            <div class="stars mt-2">
+                                @for (int i = 0; i < Model.reviewList[0].rating; i++)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                @for(int i=1;i<Model.reviewList.Count;i++)
+                {
+                    <div class="carousel-item">
+                        <div class="testimonial">
+                            <p>@($"{Model.reviewList[i].title}")</p>
+                            <p>@($"\"{Model.reviewList[i].content}\"")</p>
+                            @{
+                                user = Model.userList.FirstOrDefault(u => u.Id == Model.reviewList[i].userId);
+                            }
+                            @if (user != null)
+                            {
+                                <img src="@user.imageUrl" alt="Client">
+                                <div class="client-name">@($"{user.firstName} {user.lastName}")</div>
+                                <div class="stars mt-2">
+                                    @for (int j = 0; j < Model.reviewList[i].rating; j++)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+}
+
+<script>
+    function loadPartialView(category) {
+        console.log("Button clicked with category:", category);
+        var sortOption = category;
+        var carList = @Html.Raw(Json.Serialize(Model.carList));
+        var data = {
+            sortOrder: sortOption,
+            cars: carList
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetCarsByCategory", "Home")',
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                $('#carCategory').html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error occurred:', xhr.responseText);
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let counters = document.querySelectorAll('.counter');
+        let statsSection = document.querySelector('.stats-section');
+        let started = false;
+
+        function startCounter(counter) {
+            let target = +counter.getAttribute('data-target');
+            let count = 0;
+            let increment = target / 200;
+
+            let updateCounter = setInterval(function () {
+                count += increment;
+                counter.textContent = Math.ceil(count);
+
+                if (count >= target) {
+                    clearInterval(updateCounter);
+                    counter.textContent = target;
+                }
+            }, 10);
+        }
+
+        window.addEventListener('scroll', function () {
+            let statsPosition = statsSection.getBoundingClientRect().top;
+            let screenPosition = window.innerHeight / 1.2;
+
+            if (statsPosition < screenPosition && !started) {
+                started = true;
+                counters.forEach(counter => {
+                    startCounter(counter);
+                });
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,70 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model List<Car>
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    bool flag = false;
+}
+<head>
+    <title>Manage Cars</title>
+</head>
+
+<div class="content text-center">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 mb-4">
+                <div class="card p-4">
+                    <h5 style="font-weight: bolder; font-size: x-large;">All Cars</h5>
+                </div>
+            </div>
+            @if (HttpContextAccessor.HttpContext.Session.GetInt32("Cars") != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    Car Added to Catalog
+                </div>
+            }
+            <div class="mb-2">
+                <a href="@Url.Action("addCars", "Admin")">
+                    <button class="show-button px-sm-4 py-sm-2">
+                        Add a new Car
+                    </button>
+                </a>
+            </div>
+            @for (int i=0;i<Model.Count;i++){
+                if(@Model[i].isAvailable == 1){
+                    flag = true;
+                    <div class="col-md-4 col-sm-8 d-flex justify-content-center mb-4">
+                        <div class="card card-custom">
+                            <img src="@Model[i].imageUrl" class="card-img-top" alt="Car Image" width="55">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">@($"{Model[i].make} {Model[i].model}")</h5>
+                                <a href="@Url.Action("deleteCars", "Admin", new{id=Model[i].Id})" class="btn btn-outline-danger btn-sm mt-1 mb-2">Remove</a>
+                                <div class="d-flex justify-content-center mb-2">
+                                    <span class="me-3"><i class="fas fa-cog"></i>@Model[i].category</span>
+                                    <span class="me-3"><i class="fas fa-gas-pump"></i>@Model[i].fuelType</span>
+                                    <span><i class="fas fa-hourglass-half"></i>@Model[i].year</span>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="price">
+                                    Price : @($"$ {Model[i].pricePerDay}/Day")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @if (!flag)
+            {
+                <h4 class="text-center text-black">No Cars Added Yet!</h4>
+            }
+        </div>
+    </div>
+</div>

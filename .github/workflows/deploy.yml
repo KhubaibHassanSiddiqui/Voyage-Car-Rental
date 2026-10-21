@@ -1,0 +1,65 @@
+# Build on Ubuntu; deploy to MonsterASP.NET via Web Deploy (Windows-only action).
+# Docs: https://help.monsterasp.net/websites/git-deploy/github-actions
+
+name: Build and deploy to MonsterASP.NET
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: monster-production
+  cancel-in-progress: true
+
+env:
+  PROJECT_PATH: CompleteWebProject/CompleteWebProject/CompleteWebProject.csproj
+  PUBLISH_DIR: ./publish
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore "${{ env.PROJECT_PATH }}"
+
+      - name: Build
+        run: dotnet build "${{ env.PROJECT_PATH }}" --configuration Release --no-restore
+
+      - name: Publish (win-x86 for Monster IIS)
+        run: dotnet publish "${{ env.PROJECT_PATH }}" --configuration Release --output "${{ env.PUBLISH_DIR }}" --runtime win-x86 --no-self-contained
+
+      - name: Upload publish output
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-publish
+          path: publish/
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Download publish output
+        uses: actions/download-artifact@v4
+        with:
+          name: web-publish
+          path: publish
+
+      - name: Deploy via Web Deploy
+        uses: rasmusbuchholdt/simply-web-deploy@2.1.0
+        with:
+          website-name: ${{ secrets.WEBSITE_NAME }}
+          server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
+          server-username: ${{ secrets.SERVER_USERNAME }}
+          server-password: ${{ secrets.SERVER_PASSWORD }}
+          source-path: publish

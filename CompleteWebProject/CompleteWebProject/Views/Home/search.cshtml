@@ -1,0 +1,18 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model List<Car>
+
+@{
+    HttpContextAccessor.HttpContext.Session.SetInt32("Search", 1);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <title>Search</title>
+</head>
+<div class="container-fluid justify-content-center text-center">
+    <h1 class="text-black">Results Related to your Search</h1>
+</div>
+<div id="searchResults">
+    @await Html.PartialAsync("searchResults", Model)
+</div>

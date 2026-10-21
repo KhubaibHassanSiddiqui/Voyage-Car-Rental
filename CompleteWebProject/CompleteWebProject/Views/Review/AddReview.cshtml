@@ -1,0 +1,49 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Project.Models.Domains
+@model Review
+
+<head>
+    <title>Submit a Review</title>
+</head>
+
+    <div class="container-fluid mt-5 mb-5 bg-light-subtle">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Leave a Review</h4>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="AddReview" method="post">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Comment</label>
+                                <input type="text" class="form-control" id="title" name="title" value="@Model?.title" placeholder="Enter your Comment">
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Your Review</label>
+                                <textarea class="form-control" id="content" name="content" value="@Model?.content" rows="4"
+                                          placeholder="Write your review here"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Rating</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="rating" value="5" @(Model?.rating == 5 ? "checked" : "") />
+                                    <label for="star5" class="star">&#9733;</label>
+                                    <input type="radio" id="star4" name="rating" value="4" @(Model?.rating == 4 ? "checked" : "") />
+                                    <label for="star4" class="star">&#9733;</label>
+                                    <input type="radio" id="star3" name="rating" value="3" @(Model?.rating == 3 ? "checked" : "") />
+                                    <label for="star3" class="star">&#9733;</label>
+                                    <input type="radio" id="star2" name="rating" value="2" @(Model?.rating == 2 ? "checked" : "") />
+                                    <label for="star2" class="star">&#9733;</label>
+                                    <input type="radio" id="star1" name="rating" value="1" @(Model?.rating == 1 ? "checked" : "") />
+                                    <label for="star1" class="star">&#9733;</label>
+                                </div>
+                            </div>
+                            <input type="hidden" name="userId" value="@Model?.userId">
+                            <button type="submit" class="btn btn-orange">Submit Review</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
